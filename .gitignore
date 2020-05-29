@@ -1,0 +1,15 @@
+*.cpp
+*.cs
+*.hs
+*.js
+*.py
+*.rs
+*.rb
+*.scala
+*.kt
+
+
+*.class
+
+
+*.pdf
