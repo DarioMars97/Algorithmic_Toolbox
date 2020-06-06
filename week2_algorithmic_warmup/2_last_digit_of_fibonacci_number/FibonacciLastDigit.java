@@ -31,7 +31,7 @@ public class FibonacciLastDigit {
          }
 
          int previous=0;
-         int current=0;
+         int current=1;
 
          for (int i = 0; i < n-1; i++) {
              int temp = previous;
