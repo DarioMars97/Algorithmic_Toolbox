@@ -1,4 +1,4 @@
-public class Binarysearch {
+public class BinarySearch {
 
     public static int BinarySearchRecursive(int[] arr, int low, int high, int x) {
         if (high < low) {
