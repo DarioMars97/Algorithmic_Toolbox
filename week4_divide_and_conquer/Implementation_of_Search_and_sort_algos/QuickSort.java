@@ -30,16 +30,40 @@ public class QuickSort {
         }
     }
 
-    public static void QuickSort(int[] arr, int left, int right) {
+    public static void randomizedQuickSort(int[] arr, int left, int right){
+        if(left < right){
+            int k = (int) ((Math.random() * (right - left)) + left);
+            // swap arr[k] with arr[left]
+            int temp = arr[left];
+            arr[left] = arr[k];
+            arr[k] = temp;
+
+            int pivotPosition = pivotPartition(arr, left, right);
+            quickSortAlgorithm(arr, left, pivotPosition-1);
+            quickSortAlgorithm(arr, pivotPosition+1, right);
+        }
+    }
+
+    public static void quickSort(int[] arr, int left, int right) {
         if (arr.length <= right) {
-            quickSortAlgorithm(arr, left, right-1);
+            // quickSortAlgorithm(arr, left, right-1);
+            randomizedQuickSort(arr, left, right-1);
         }else {
-            quickSortAlgorithm(arr, left, right);
+            // quickSortAlgorithm(arr, left, right);
+            randomizedQuickSort(arr, left, right);
+        }
+    }
+
+    public static void testRandom(int max) {
+        for (int i = 0; i < 20; i++) {
+            int random = (int)(Math.random()*max)%max;
+            System.out.println(random);
+            System.out.println(random <= max);
         }
     }
 
     public static void main(String[] args) {
         int[] arr = {6,4,3,9,8,2,9,4,7,6,1};
-        QuickSort(arr, 0, 10);
+        quickSort(arr, 0, 10);
     }
 }
