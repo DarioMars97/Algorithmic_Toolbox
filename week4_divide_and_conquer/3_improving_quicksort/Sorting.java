@@ -4,14 +4,30 @@ import java.util.*;
 public class Sorting {
     private static Random random = new Random();
 
-    private static int[] partition3(int[] a, int l, int r) {
-      //write your code here
+    private static int[] partition3(int[] arr, int left, int right) {
+        //write your code here
+        int pivot = arr[left];
+        int lessThan = left;
+        int greaterThan = right;
 
+        for (int i = left; i<=greaterThan;i++){
+            if (arr[i]<pivot) {
+                int temp = arr[lessThan];
+                arr[lessThan] = arr[i];
+                arr[i] = temp;
 
-      int m1 = l;
-      int m2 = r;
-      int[] m = {m1, m2};
-      return m;
+                lessThan++;
+            }
+            else if (arr[i]>pivot) {
+                int temp = arr[greaterThan];
+                arr[greaterThan] = arr[i];
+                arr[i] = temp;
+
+                greaterThan--; 
+                i--; // to not affect our loop from left+1 to graterThan
+            }
+        }
+        return new int[] {lessThan, greaterThan};
     }
 
     private static int partition2(int[] a, int l, int r) {
@@ -45,6 +61,20 @@ public class Sorting {
         randomizedQuickSort(a, m + 1, r);
     }
 
+    public static void optimizedQuickSort(int[] arr, int left, int right) {
+        while (left < right) {
+            // choose pivot in the middle
+            int k = left + ((right-left)/2);
+            // swap arr[k] with arr[left]
+            int temp = arr[k];
+            arr[k] = arr[left];
+            arr[left] = temp;
+            int[] partitionPositions = partition3(arr, left, right);
+            optimizedQuickSort(arr, left, partitionPositions[0] - 1);
+            left = partitionPositions[1] + 1;
+        }
+    }
+
     public static void main(String[] args) {
         FastScanner scanner = new FastScanner(System.in);
         int n = scanner.nextInt();
@@ -52,7 +82,7 @@ public class Sorting {
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextInt();
         }
-        randomizedQuickSort(a, 0, n - 1);
+        optimizedQuickSort(a, 0, n - 1);
         for (int i = 0; i < n; i++) {
             System.out.print(a[i] + " ");
         }

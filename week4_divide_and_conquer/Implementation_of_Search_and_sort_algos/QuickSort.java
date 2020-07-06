@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class QuickSort {
 
     public static class Pair{
@@ -25,34 +32,31 @@ public class QuickSort {
 
     public static Pair pivotPartition3(int[] arr, int left, int right) {
         int pivot = arr[left];
-        int k = left; // k is equalPivotRegionEndPosition
-        int i = left; // i is lessThanPivotRegionEndPosition
-        int j;// j is moreThanPivotRegionEndPosition which starts with pivot +1
+        int lessThan = left; 
+        int greaterThan = right; 
 
-        for (j = left + 1; j <= right; j++) {
-            if (arr[j] <= pivot) {
-                // increase equal pivot region 
-                k++;
-                if(arr[j] < pivot){
-                    // increase less than pivot region
-                    i++;
-                    // swap arr[i] with arr[k]
-                    int temp = arr[j];
-                    arr[j] = arr[i];
-                    arr[i] = temp;
-                }else if (arr[j] == pivot) {
-                    // swap arr[i] with arr[k]
-                    int temp = arr[j];
-                    arr[j] = arr[k];
-                    arr[k] = temp;
-                }
+        for (int i = left; i <= greaterThan; i++) {
+            if (arr[i] < pivot) {
+                int temp = arr[lessThan];
+                arr[lessThan] = arr[i];
+                arr[i] = temp;
+
+                lessThan++;
+            }else if (arr[i] > pivot){
+                int temp = arr[greaterThan];
+                arr[greaterThan] = arr[i];
+                arr[i] = temp;
+
+                greaterThan--;
+                i--; // to not affect our loop from left+1 to greaterThan
             }
         }
+        // no need to swap as i now move the pivot it self
         // swap the pivot "which is the first element in the array"
-        // arr[i] "which is the last element in the region that are smaller than the pivot"
-        arr[left] = arr[i];
-        arr[i] = pivot;
-        return new Pair(i, k);
+        // arr[lessThan] "which is the last element in the region that are smaller than the pivot"
+        // arr[left] = arr[lessThan];
+        // arr[lessThan] = pivot;
+        return new Pair(lessThan, greaterThan);
     }
 
     public static int pivotPartition(int[] arr, int left, int right) {
@@ -127,7 +131,7 @@ public class QuickSort {
          * we will use a trick called Tail Recursion Elimination
          */
         while (left < right) {
-            int k = right + ((left - right)/2);
+            int k = left + ((right - left)/2);
             // int k = (int) ((Math.random() * (right - left)) + left);
             // swap arr[k] with arr[left]
             int temp = arr[left];
@@ -135,7 +139,7 @@ public class QuickSort {
             arr[k] = temp;
 
             Pair pivotPositions = pivotPartition3(arr, left, right);
-            optimizedTimeQuickSort(arr, left, pivotPositions.getFirst()-1);
+            optimizedTimeAndSpaceQuickSort(arr, left, pivotPositions.getFirst()-1);
             left = pivotPositions.getSecond()+1;
         }
     }
@@ -163,11 +167,47 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        // int[] arr = {9,9,9,5,5,5,2,2,2,4};
-        int [] arr = {63,	42,	79,	30,	29,
-            24,	23,	92,	42,	10
-            };
-        quickSort(arr, 0, 49);
-        int i = 5;
+        FastScanner scanner = new FastScanner(System.in);
+        int n = scanner.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
+        }
+        quickSort(a, 0, n - 1);
+        for (int i = 0; i < n; i++) {
+            System.out.print(a[i] + " ");
+            char[] stars = new char[a[i]];
+            Arrays.fill(stars, '*');
+            System.out.print(new String(stars));
+            System.out.println();
+        }
+    }
+
+    static class FastScanner {
+        BufferedReader br;
+        StringTokenizer st;
+
+        FastScanner(InputStream stream) {
+            try {
+                br = new BufferedReader(new InputStreamReader(stream));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String next() {
+            while (st == null || !st.hasMoreTokens()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
+        }
     }
 }
