@@ -52,7 +52,12 @@ public class MajorityElement {
          * then it will be O(nlogn)
          */
         // 1st sort
-        int[] arr = mergeSort(Arrays.copyOfRange(a, left, right));
+        int[] arr;
+        if (right == a.length) {
+            arr = mergeSort(Arrays.copyOfRange(a, left, right));
+        }else {
+            arr = mergeSort(Arrays.copyOfRange(a, left, right+1));
+        }
 
         // 2nd loop
         int currentElement = arr[0];
@@ -62,7 +67,7 @@ public class MajorityElement {
                 currentElementCounter++;
             } else{
                 currentElement = arr[i];
-                currentElementCounter = 0;
+                currentElementCounter = 1;
             }
             if (currentElementCounter > (arr.length/2)) {
                 return currentElement;

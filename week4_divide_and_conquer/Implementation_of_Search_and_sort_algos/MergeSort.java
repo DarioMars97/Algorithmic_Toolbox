@@ -1,4 +1,9 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 
 public class MergeSort {
@@ -41,11 +46,47 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-        int[] arr = {14,9,3,10,9,5,4,2,12};
-        int[] resutl = mergeSort(arr);
-        for (int i : resutl) {
-            System.out.print(i);
+        FastScanner scanner = new FastScanner(System.in);
+        int n = scanner.nextInt();
+        int[] a = new int[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = scanner.nextInt();
+        }
+        int[] arr = mergeSort(a);
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr[i] + " ");
+            char[] stars = new char[arr[i]];
+            Arrays.fill(stars, '*');
+            System.out.print(new String(stars));
             System.out.println();
+        }
+    }
+
+    static class FastScanner {
+        BufferedReader br;
+        StringTokenizer st;
+
+        FastScanner(InputStream stream) {
+            try {
+                br = new BufferedReader(new InputStreamReader(stream));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        String next() {
+            while (st == null || !st.hasMoreTokens()) {
+                try {
+                    st = new StringTokenizer(br.readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return st.nextToken();
+        }
+
+        int nextInt() {
+            return Integer.parseInt(next());
         }
     }
 }
