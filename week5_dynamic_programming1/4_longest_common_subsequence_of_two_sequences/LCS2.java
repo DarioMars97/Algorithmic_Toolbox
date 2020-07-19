@@ -4,7 +4,24 @@ public class LCS2 {
 
     private static int lcs2(int[] a, int[] b) {
         //Write your code here
-        return Math.min(a.length, b.length);
+        int[][] LCS = new int[a.length+1][b.length+1];
+        for (int i = 0; i < LCS[0].length; i++) {
+            LCS[0][i]=0;
+        }
+        for (int i = 0; i < LCS.length; i++) {
+            LCS[i][0]=0;
+        }
+
+        for (int i = 1; i < LCS.length; i++) {
+            for (int j = 1; j < LCS[i].length; j++) {
+                if (a[i-1] == b[j-1]) {
+                    LCS[i][j] = LCS[i-1][j-1] + 1;
+                }else{
+                    LCS[i][j] = Math.max(LCS[i][j-1], LCS[i-1][j]);
+                }
+            }
+        }
+        return LCS[a.length][b.length];
     }
 
     public static void main(String[] args) {
@@ -20,8 +37,8 @@ public class LCS2 {
         for (int i = 0; i < m; i++) {
             b[i] = scanner.nextInt();
         }
-
-        System.out.println(lcs2(a, b));
+        int lcs = lcs2(a, b);
+        System.out.println(lcs);
     }
 }
 

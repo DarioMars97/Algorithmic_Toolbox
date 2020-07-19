@@ -4,7 +4,31 @@ public class LCS3 {
 
     private static int lcs3(int[] a, int[] b, int[] c) {
         //Write your code here
-        return Math.min(Math.min(a.length, b.length), c.length);
+        int[][][] LCS = new int[a.length+1][b.length+1][c.length+1];
+
+        for (int i = 0; i < LCS.length; i++) {
+            LCS[i][0][0] =0;
+        }
+        for (int i = 0; i < LCS[0].length; i++) {
+            LCS[0][i][0] =0;
+        }
+        for (int i = 0; i < LCS[0][0].length; i++) {
+            LCS[0][0][i] =0;
+        }
+
+        for (int i = 1; i < LCS.length; i++) {
+            for (int j = 1; j < LCS[i].length; j++) {
+                for (int k = 1; k < LCS[i][j].length; k++) {
+                    if (a[i-1] == b[j-1] && a[i-1] == c[k-1]) {
+                        LCS[i][j][k] = LCS[i-1][j-1][k-1] + 1;
+                    }else {
+                        int max1 = Math.max(LCS[i][j-1][k], LCS[i][j][k-1]);
+                        LCS[i][j][k] = Math.max(max1, LCS[i-1][j][k]);
+                    }
+                }
+            }
+        }
+        return LCS[a.length][b.length][c.length];
     }
 
     public static void main(String[] args) {
@@ -24,7 +48,8 @@ public class LCS3 {
         for (int i = 0; i < cn; i++) {
             c[i] = scanner.nextInt();
         }
-        System.out.println(lcs3(a, b, c));
+        int result = lcs3(a,b,c);
+        System.out.println(result);
     }
 }
 
