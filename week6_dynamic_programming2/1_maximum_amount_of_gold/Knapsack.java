@@ -15,6 +15,7 @@ public class Knapsack {
           for (int j = 1; j < values[i].length; j++) {
             values[i][j] = values[i-1][j];
             if (itemsWeights[i-1] <= j) {
+              // here items value or weight [i-1] because we have extra row of zeroes
               int val = values[i-1][j-itemsWeights[i-1]] + itemsValues[i-1];
               if (val > values[i][j]) {
                 values[i][j] = val;
